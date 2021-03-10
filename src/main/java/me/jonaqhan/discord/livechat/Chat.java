@@ -3,15 +3,14 @@ package me.jonaqhan.discord.livechat;
 import javax.security.auth.login.LoginException;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import me.jonaqhan.discord.Main;
-import me.jonaqhan.discord.tools.Chatt;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -62,44 +61,62 @@ public class Chat extends ListenerAdapter implements Listener {
 		embed.setColor(plugin.getConfig().getInt("Colors.chat"));
 		Channel.sendMessage(embed.build()).queue();
 	}
-	
+
 	@EventHandler
-	public void Join(PlayerJoinEvent e) { 
+	public void Join(PlayerJoinEvent e) {
 		String p = e.getPlayer().getName();
 		String message = plugin.getConfig().getString("Messages.join");
 		TextChannel Channel = jda.getTextChannelById(plugin.getConfig().getString("Channel-id"));
 		if ((TextChannel) Channel == null)
 			return;
 
-		String content = "**" +p + "** " +  message;
+		String content = "**" + p + "** " + message;
 		EmbedBuilder embed = new EmbedBuilder();
 		embed.setDescription(content);
 		embed.setColor(plugin.getConfig().getInt("Colors.join"));
 		Channel.sendMessage(embed.build()).queue();
 	}
-	
+
 	@EventHandler
-	public void Leave(PlayerQuitEvent e) { 
+	public void Leave(PlayerQuitEvent e) {
 		String p = e.getPlayer().getName();
 		String message = plugin.getConfig().getString("Messages.leave");
 		TextChannel Channel = jda.getTextChannelById(plugin.getConfig().getString("Channel-id"));
 		if ((TextChannel) Channel == null)
 			return;
 
-		String content = "**" + p + "** "+ message;
+		String content = "**" + p + "** " + message;
 		EmbedBuilder embed = new EmbedBuilder();
 		embed.setDescription(content);
 		embed.setColor(plugin.getConfig().getInt("Colors.leave"));
 		Channel.sendMessage(embed.build()).queue();
 	}
 
+	@EventHandler
+	public void Death(PlayerDeathEvent e) { 
+
+		String p = e.getEntity().getName();
+		String message = e.getDeathMessage().replace("§e", "").replace(p, "**" + p + "**");
+		TextChannel Channel = jda.getTextChannelById(plugin.getConfig().getString("Channel-id"));
+		if ((TextChannel) Channel == null)
+			return;
+		
+		String content = ":skull_crossbones: " + message;
+		EmbedBuilder embed = new EmbedBuilder();
+		embed.setDescription(content);
+		embed.setColor(plugin.getConfig().getInt("Colors.death"));
+		Channel.sendMessage(embed.build()).queue();
+		
+		
+	}
 
 	@Override
 	public void onGuildMessageReceived(GuildMessageReceivedEvent event) { // discord stuurt bericht naar minecraft chat
-		if (event.getAuthor().isBot() || event.getAuthor().isFake() || event.isWebhookMessage())
+	if (event.getAuthor().isBot() || event.getAuthor().isFake() || event.isWebhookMessage())
 			return;
-		
-		if (event.getChannel() != jda.getTextChannelById(plugin.getConfig().getString("Channel-id"))) return;
+
+		if (event.getChannel() != jda.getTextChannelById(plugin.getConfig().getString("Channel-id")))
+			return;
 
 		String message = event.getMessage().getContentRaw();
 		User user = event.getAuthor();
@@ -109,7 +126,11 @@ public class Chat extends ListenerAdapter implements Listener {
 
 		String username = "#" + hex + user.getName();
 
-		Bukkit.broadcastMessage(Chatt.tools(username) + "#" + user.getDiscriminator() + ": §f" + message);
+		try {
+
+			Bukkit.broadcastMessage(CColor.tools(username) + "#" + user.getDiscriminator() + ": §f" + message);
+		} catch (Exception e) {
+		}
 
 	}
 }

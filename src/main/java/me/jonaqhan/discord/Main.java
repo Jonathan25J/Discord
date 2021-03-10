@@ -1,5 +1,6 @@
 package me.jonaqhan.discord;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.jonaqhan.discord.livechat.Chat;
@@ -28,7 +29,7 @@ public class Main extends JavaPlugin {
 	}
 
 	public void onDisable() {
-		try {
+
 			TextChannel Channel = Chat.jda.getTextChannelById(getConfig().getString("Channel-id"));
 			if ((TextChannel) Channel == null)
 				return;
@@ -38,13 +39,14 @@ public class Main extends JavaPlugin {
 			EmbedBuilder embed = new EmbedBuilder();
 			embed.setDescription(content);
 			embed.setColor(getConfig().getInt("Colors.server_off"));
-
+			
 			Channel.sendMessage(embed.build()).queue();
-			return;
-		} finally {
-
+			
+			try {
 			Chat.jda.shutdownNow();
-		}
+			} catch(Exception e) {}
+
+		
 
 	}
 

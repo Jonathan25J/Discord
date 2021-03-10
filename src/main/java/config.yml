@@ -11,10 +11,10 @@ Messages:
   join: 'joined the game'
   leave: 'left the game'
 
-#Change color of the embeds
-Colors: # needs to be in decimal
-#Needs to be in decimal color code
+#Change color of the embeds, needs to be in decimal
+Colors:
   chat: 3459527
+  death: 16539139
   server_on: 2472448
   server_off: 12204800
   join: 4388210
