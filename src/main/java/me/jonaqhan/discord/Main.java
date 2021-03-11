@@ -1,13 +1,12 @@
 package me.jonaqhan.discord;
 
-import org.bukkit.Bukkit;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.jonaqhan.discord.livechat.Chat;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.TextChannel;
-
 public class Main extends JavaPlugin {
 
 	static JDA jda;
@@ -29,6 +28,7 @@ public class Main extends JavaPlugin {
 	}
 
 	public void onDisable() {
+		 HandlerList.unregisterAll(this);
 
 			TextChannel Channel = Chat.jda.getTextChannelById(getConfig().getString("Channel-id"));
 			if ((TextChannel) Channel == null)
@@ -40,9 +40,10 @@ public class Main extends JavaPlugin {
 			embed.setDescription(content);
 			embed.setColor(getConfig().getInt("Colors.server_off"));
 			
-			Channel.sendMessage(embed.build()).queue();
+			Channel.sendMessage(embed.build()).complete();
 			
 			try {
+		    Chat.jda.cancelRequests();
 			Chat.jda.shutdownNow();
 			} catch(Exception e) {}
 

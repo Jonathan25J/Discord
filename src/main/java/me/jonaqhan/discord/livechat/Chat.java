@@ -40,6 +40,7 @@ public class Chat extends ListenerAdapter implements Listener {
 		}
 	}
 
+	@SuppressWarnings("static-access")
 	public Chat(Main plugin) {
 		this.plugin = plugin;
 		Build();
