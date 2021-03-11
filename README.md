@@ -27,4 +27,6 @@ Colors:
   leave: 16082498
 }
 
+**No update guaranteed and can contain bugs!!**
+
 Made by Jonaqhan
