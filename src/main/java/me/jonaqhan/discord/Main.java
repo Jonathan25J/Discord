@@ -42,6 +42,7 @@ public class Main extends JavaPlugin {
 			
 			Channel.sendMessage(embed.build()).complete();
 			
+			
 			try {
 		    Chat.jda.cancelRequests();
 			Chat.jda.shutdownNow();
