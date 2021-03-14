@@ -1,8 +1,5 @@
 package me.jonaqhan.discord.livechat;
 
-import java.util.Collection;
-import java.util.EnumSet;
-
 import javax.security.auth.login.LoginException;
 
 import org.bukkit.Bukkit;
@@ -18,21 +15,13 @@ import me.jonaqhan.discord.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.audio.AudioReceiveHandler;
-import net.dv8tion.jda.api.audio.AudioSendHandler;
-import net.dv8tion.jda.api.audio.SpeakingMode;
-import net.dv8tion.jda.api.audio.hooks.ConnectionListener;
-import net.dv8tion.jda.api.audio.hooks.ConnectionStatus;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.managers.AudioManager;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 
-public class Chat extends ListenerAdapter implements Listener, AudioManager {
+public class Chat extends ListenerAdapter implements Listener {
 	public static Main plugin;
 	public static JDA jda;
 	static GatewayIntent[] gatewayIntents = new GatewayIntent[] {};
@@ -125,6 +114,8 @@ public class Chat extends ListenerAdapter implements Listener, AudioManager {
 	
 	@EventHandler
 	public void Advancement(PlayerAdvancementDoneEvent e) { 
+		
+		if (e.getAdvancement().getKey().getKey().contains("recipes")) return;
 
 		String p = "**" +e.getPlayer().getName() + "**";
 		String message = plugin.getConfig().getString("Messages.advancement");
@@ -168,107 +159,5 @@ public class Chat extends ListenerAdapter implements Listener, AudioManager {
 
 	}
 
-	public void openAudioConnection(VoiceChannel channel) {
-
-		
-	}
-
-	public void closeAudioConnection() {
-		
-	}
-
-	public void setSpeakingMode(Collection<SpeakingMode> mode) {
-		
-	}
-
-	public EnumSet<SpeakingMode> getSpeakingMode() {
-		return null;
-	}
-
-	public void setSpeakingDelay(int millis) {
-		
-	}
-
-	public JDA getJDA() {
-		return null;
-	}
-
-	public Guild getGuild() {
-		return null;
-	}
-
-	public boolean isAttemptingToConnect() {
-		return false;
-	}
-
-	public VoiceChannel getQueuedAudioConnection() {
-		return null;
-	}
-
-	public VoiceChannel getConnectedChannel() {
-		return null;
-	}
-
-	public boolean isConnected() {
-		return false;
-	}
-
-	public void setConnectTimeout(long timeout) {
-		
-	}
-
-	public long getConnectTimeout() {
-		return 0;
-	}
-
-	public void setSendingHandler(AudioSendHandler handler) {
-		
-	}
-
-	public AudioSendHandler getSendingHandler() {
-		return null;
-	}
-
-	public void setReceivingHandler(AudioReceiveHandler handler) {
-		
-	}
-
-	public AudioReceiveHandler getReceivingHandler() {
-		return null;
-	}
-
-	public void setConnectionListener(ConnectionListener listener) {
-		
-	}
-
-	public ConnectionListener getConnectionListener() {
-		return null;
-	}
-
-	public ConnectionStatus getConnectionStatus() {
-		return null;
-	}
-
-	public void setAutoReconnect(boolean shouldReconnect) {
-		
-	}
-
-	public boolean isAutoReconnect() {
-		return false;
-	}
-
-	public void setSelfMuted(boolean muted) {
-		
-	}
-
-	public boolean isSelfMuted() {
-		return false;
-	}
-
-	public void setSelfDeafened(boolean deafened) {
-	}
-
-	public boolean isSelfDeafened() {
-		return false;
-	}
+	
 }
